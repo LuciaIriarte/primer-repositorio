@@ -15,35 +15,54 @@ Utiliza la librería readline-sync para pedir al usuario el número de participa
 
 import * as rs from "readline-sync";
 
-
-
-
-//function calcularPuntaje(sabor:number,presentacion:number,dificultad:number) : number {
- //    return sabor + presentacion + dificultad;
-//}
-
-let puntajeMaximo: number=0
-let hayEmpate: boolean;
-
-
-function determinarGanador(sabor: number, presentacion: number, dificultad: number) : string{
-    let cantidadParticipantes: number = rs.questionInt("Ingrese la cantidad de participantes: ")
-    let ganador: string="";
-    for (let i:number =1; i<=cantidadParticipantes; i++){
-        console.log(`Ingrese puntuacion del participante ${i}`)
-        sabor = rs.questionInt("Puntaje del 1 a 5, por sabor numero: ");
-        presentacion = rs.questionInt("Puntaje del 1 a 5, por presentación: ");
-        dificultad = rs.questionInt("Puntaje del 1 a 5, por dificultad: ");
-    let calcularP: number = sabor+presentacion+dificultad;
-    if (calcularP >= puntajeMaximo){
-       puntajeMaximo = calcularP;
-       calcularP = i
-       ganador = `El ganador es ${i}`
-    } else if(calcularP == puntajeMaximo){ //reemplazar con la funcion calcularPuntaje (agregar que analice los numeros de 1 al 5)
-       console.log("Hubo un empate")
-    }
-    }return ganador
+function calcularPuntaje(sabor:number,presentacion:number,dificultad:number) : number {
+    return sabor + presentacion + dificultad
 }
 
-let participanteGanador = determinarGanador(0,0,0)
-console.log (participanteGanador);
+function preguntarPuntaje(mensaje:string): number{
+    let puntaje: number = rs.questionInt(mensaje)
+    while(puntaje < 1 || puntaje > 5){
+     console.log(`El puntaje valido debe ser entre 1-5 puntos`)
+     puntaje = rs.questionInt(mensaje)
+
+    }return puntaje
+}
+  
+function determinarGanador() : void {
+    
+    let cantidadParticipantes: number = rs.questionInt("Ingrese la cantidad de participantes: ")
+    let puntajeMaximo: number=0;
+    let ganador: string="";
+    let hayEmpate: boolean= false;
+
+
+    for (let i:number =1; i<=cantidadParticipantes; i++){
+        console.log(`Ingrese puntuacion del participante ${i}`)
+
+        let sabor = preguntarPuntaje("Puntaje por sabor: ");
+        let presentacion = preguntarPuntaje("Puntaje por presentación: ");
+        let dificultad = preguntarPuntaje("Puntaje por dificultad: ");
+
+        let calcularP: number = calcularPuntaje(sabor,presentacion,dificultad)
+    if (calcularP > puntajeMaximo){
+
+       puntajeMaximo = calcularP;
+       ganador = `El ganador es ${i} con ${puntajeMaximo} puntos`
+       hayEmpate = false
+       
+    } else if(calcularP == puntajeMaximo){ 
+       hayEmpate = true
+    }
+    }
+
+
+    if(hayEmpate == true){
+       console.log(`Hubo un empate en el 1er puesto`) 
+    }else{
+        console.log(ganador)
+    }
+    
+}
+
+determinarGanador()
+
