@@ -55,8 +55,7 @@ function determinarGanador() : void {
     }
     }
 
-
-    if(hayEmpate == true){
+    if(hayEmpate){
        console.log(`Hubo un empate en el 1er puesto`) 
     }else{
         console.log(ganador)
